@@ -7,5 +7,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bson-4.1.1" level="project" />
+    <orderEntry type="library" name="mongodb-driver-core-4.1.1" level="project" />
+    <orderEntry type="library" name="mongodb-driver-sync-4.1.1" level="project" />
+    <orderEntry type="library" name="bcrypt-0.10.2-javadoc" level="project" />
+    <orderEntry type="library" name="bcrypt-0.10.2-javadoc (2)" level="project" />
+    <orderEntry type="library" name="jBCrypt-0.4" level="project" />
   </component>
 </module>

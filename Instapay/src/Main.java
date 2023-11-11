@@ -1,17 +1,32 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
-
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
+//        Database database = DatabaseFactory.getDatabase();
+//        User user = new User(
+//                "sara",
+//                "01004579971",
+//                500.50,
+//                "Cairo",
+//                "Sara Walid",
+//                null,
+//                "khadija"
+//        );
+//        database.createUser(user, "saraWalid");
+        // -------------------------
+//        database.updateUserBalance(user);
+        // -------------------------
+//        System.out.println(database.checkUniqueUser("shawkyebrahim2514"));
+        // -------------------------
+//        User user = database.validateUser("sara", "saraWalid");
+//        if(user == null) {
+//            System.out.println("No account found!");
+//        } else {
+//            System.out.println(user.getUsername());
+//            System.out.println(user.getMobileNumber());
+//            System.out.println(user.getBalance());
+//            System.out.println(user.getAddress());
+//            System.out.println(user.getName());
+//            System.out.println(user.getBankAccountNumber());
+//            System.out.println(user.getWalletNumber());
+//        }
     }
 }
