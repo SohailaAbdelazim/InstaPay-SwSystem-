@@ -12,7 +12,6 @@ public class ElectricityBill extends Bill{
 
     @Override
     protected Double calculateBillAmount() {
-
         double electricityRate = 0.15;
         return consumption * electricityRate;
     }

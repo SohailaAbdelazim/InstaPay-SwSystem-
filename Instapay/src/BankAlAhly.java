@@ -1,4 +1,5 @@
 public class BankAlAhly implements BankAPI{
+    private User user;
     public boolean verifyAccount( String mobileNumber , String bankAccountNumber ){
         return true ;
     }
@@ -6,6 +7,6 @@ public class BankAlAhly implements BankAPI{
 
     }
     public void payBill(Bill bill){
-
+        bill.payBill(user);
     }
 }

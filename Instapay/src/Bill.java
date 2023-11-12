@@ -41,6 +41,10 @@ public abstract class Bill {
         return consumption;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
    private boolean verifyBillDetails(){
        try {
            LocalDate billDate = LocalDate.parse(date);
@@ -66,15 +70,22 @@ public abstract class Bill {
     protected abstract Double calculateBillAmount();
 
 
-    public void payBill(){
+    public void payBill(User user){
         if (verifyBillDetails()) {
             // Calculate the bill amount
-            Double billAmount = calculateBillAmount();
-            // Update the bill status
-            status = "Paid";
-            // Update the bill amount
-            amount = billAmount;
+            amount = calculateBillAmount();
             // Print the bill
+            printBill();
+            // Check if the user has enough balance to pay the bill
+            if(!user.compareBalance(amount)){
+                System.out.println("You don't have enough balance to pay this bill");
+                return;
+            }
+            // Deduct the bill amount from the user balance
+            user.deductAmount(amount);
+            // Update the bill status to "Paid"
+            status = "Paid";
+            // Print the updated bill details
             printBill();
 
         } else {
@@ -83,7 +94,7 @@ public abstract class Bill {
 
     }
 
-    private void printBill(){
+    public void printBill(){
         System.out.println("Bill ID: " + id);
         System.out.println("Bill Amount: " + amount);
         System.out.println("Bill Date: " + date);
@@ -91,6 +102,4 @@ public abstract class Bill {
         System.out.println("Bill Status: " + status);
         System.out.println("Bill Consumption: " + consumption);
     }
-
-
 }
