@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 public abstract class Bill {
     int id;
     Double amount;
@@ -40,16 +42,55 @@ public abstract class Bill {
     }
 
    private boolean verifyBillDetails(){
-        return true;
+       try {
+           LocalDate billDate = LocalDate.parse(date);
+           if (billDate.isBefore(LocalDate.now())) {
+               // Date has passed
+               return false;
+           }
+       } catch (DateTimeParseException e) {
+           // Invalid date format
+           return false;
+       }
+
+       // Check if the status is not paid
+       if ("Paid".equalsIgnoreCase(status)) {
+           return false;
+       }
+
+       // If all conditions pass, the bill details are considered valid
+       return true;
+
    }
 
-    private Double calculateBillAmount() {
-        return 0.0;
+    protected abstract Double calculateBillAmount();
+
+
+    public void payBill(){
+        if (verifyBillDetails()) {
+            // Calculate the bill amount
+            Double billAmount = calculateBillAmount();
+            // Update the bill status
+            status = "Paid";
+            // Update the bill amount
+            amount = billAmount;
+            // Print the bill
+            printBill();
+
+        } else {
+            System.out.println("Bill cannot be paid due to invalid details");
+        }
+
     }
 
-    public void payBill(){}
-
-    public void printBill(){}
+    private void printBill(){
+        System.out.println("Bill ID: " + id);
+        System.out.println("Bill Amount: " + amount);
+        System.out.println("Bill Date: " + date);
+        System.out.println("Bill Type: " + type);
+        System.out.println("Bill Status: " + status);
+        System.out.println("Bill Consumption: " + consumption);
+    }
 
 
 }
