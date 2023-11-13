@@ -2,17 +2,15 @@ public class BankAlAhly implements BankAPI{
     public boolean verifyAccount( String mobileNumber , String bankAccountNumber ){
         //fake verification.
         if (mobileNumber != null && !mobileNumber.isEmpty() && bankAccountNumber != null && !bankAccountNumber.isEmpty()) {
-            System.out.println("Account verified successfully !\n");
             return true;
         } else {
-            System.out.println("Unverified account!\n");
             return false;
         }
     }
-    public void transerMoney(String bankNumber, Double amount){
+    public boolean transerMoney(String bankNumber, Double amount){
         // fake transfer :
-        System.out.println("Transferring money with Bank Al Ahly:\n" +
-                " Bank Number - " + bankNumber + ", Amount - " + amount);
+        //System.out.println("Transferring money with Bank Al Ahly:\n" +n" Bank Number - " + bankNumber + ", Amount - " + amount);
+        return true;
     }
     public void payBill(Bill bill){
 
