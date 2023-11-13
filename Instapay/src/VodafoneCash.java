@@ -1,4 +1,5 @@
 public class VodafoneCash implements WalletProvider {
+    User user;
     public boolean verifyWallet( String mobileNumber){
         //fake verification.
         if (mobileNumber != null && !mobileNumber.isEmpty()) {
@@ -15,6 +16,6 @@ public class VodafoneCash implements WalletProvider {
         //System.out.println("Transferring money with Bank Al Ahly:\n" + " Wallet Number - " + userNumber + ", Amount - " + amount);
     }
     public void payBill(Bill bill){
-
+        bill.payBill(user);
     }
 }
