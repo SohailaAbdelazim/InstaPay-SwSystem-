@@ -1,12 +1,10 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 public abstract class Bill {
-    int id;
-    Double amount;
-    String date;
-    String type;
-    String status;
-    Double consumption;
+    private int id;
+    private Double amount;
+    private String date;
+    private String type;
+    private String status;
+    private Double consumption;
 
     public Bill(int id, Double amount, String date, String type, String status, Double consumption) {
         this.id = id;
@@ -16,6 +14,8 @@ public abstract class Bill {
         this.status = status;
         this.consumption = consumption;
     }
+
+    public Bill() {}
 
     public int getId() {
         return id;
@@ -45,53 +45,8 @@ public abstract class Bill {
         this.status = status;
     }
 
-   private boolean verifyBillDetails(){
-       try {
-           LocalDate billDate = LocalDate.parse(date);
-           if (billDate.isBefore(LocalDate.now())) {
-               // Date has passed
-               return false;
-           }
-       } catch (DateTimeParseException e) {
-           // Invalid date format
-           return false;
-       }
-
-       // Check if the status is not paid
-       if ("Paid".equalsIgnoreCase(status)) {
-           return false;
-       }
-
-       // If all conditions pass, the bill details are considered valid
-       return true;
-
-   }
-
-    protected abstract Double calculateBillAmount();
-
-
-    public void payBill(User user){
-        if (verifyBillDetails()) {
-            // Calculate the bill amount
-            amount = calculateBillAmount();
-            // Print the bill
-            printBill();
-            // Check if the user has enough balance to pay the bill
-            if(!user.compareBalance(amount)){
-                System.out.println("You don't have enough balance to pay this bill");
-                return;
-            }
-            // Deduct the bill amount from the user balance
-            user.deductAmount(amount);
-            // Update the bill status to "Paid"
-            status = "Paid";
-            // Print the updated bill details
-            printBill();
-
-        } else {
-            System.out.println("Bill cannot be paid due to invalid details");
-        }
-
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public void printBill(){

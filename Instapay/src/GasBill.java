@@ -6,12 +6,9 @@ public class GasBill extends Bill {
         this.meterNumber = meterNumber;
     }
 
+    public GasBill() {}
+
     public String getMeterNumber() {
         return meterNumber;
-    }
-    @Override
-    protected Double calculateBillAmount() {
-        double gasRate = 1.2;
-        return consumption * gasRate;
     }
 }

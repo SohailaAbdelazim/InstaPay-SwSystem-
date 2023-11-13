@@ -6,13 +6,9 @@ public class WaterBill extends Bill{
         this.accountNumber = accountNumber;
     }
 
+    public WaterBill() {}
+
     public String getAccountNumber() {
         return accountNumber;
-    }
-
-    @Override
-    protected Double calculateBillAmount() {
-        double waterRate = 0.5;
-        return consumption * waterRate;
     }
 }

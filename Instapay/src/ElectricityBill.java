@@ -6,13 +6,9 @@ public class ElectricityBill extends Bill{
         this.accountNumber = accountNumber;
     }
 
+    public ElectricityBill() {}
+
     public String getAccountNumber() {
         return accountNumber;
-    }
-
-    @Override
-    protected Double calculateBillAmount() {
-        double electricityRate = 0.15;
-        return consumption * electricityRate;
     }
 }

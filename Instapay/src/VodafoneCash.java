@@ -15,7 +15,8 @@ public class VodafoneCash implements WalletProvider {
        return true;
         //System.out.println("Transferring money with Bank Al Ahly:\n" + " Wallet Number - " + userNumber + ", Amount - " + amount);
     }
-    public void payBill(Bill bill){
-        bill.payBill(user);
+    public void payBill(Bill bill) {
+        System.out.println("Paying bill with Vodafone Cash:\n" + " Bill ID - " + bill.getId() + ", Amount - " + bill.getAmount());
+        System.out.println("Bill paid successfully !\n");
     }
 }
