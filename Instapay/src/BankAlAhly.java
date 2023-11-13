@@ -1,4 +1,5 @@
 public class BankAlAhly implements BankAPI{
+    private User user;
     public boolean verifyAccount( String mobileNumber , String bankAccountNumber ){
         //fake verification.
         if (mobileNumber != null && !mobileNumber.isEmpty() && bankAccountNumber != null && !bankAccountNumber.isEmpty()) {
@@ -15,6 +16,6 @@ public class BankAlAhly implements BankAPI{
                 " Bank Number - " + bankNumber + ", Amount - " + amount);
     }
     public void payBill(Bill bill){
-
+        bill.payBill(user);
     }
 }
