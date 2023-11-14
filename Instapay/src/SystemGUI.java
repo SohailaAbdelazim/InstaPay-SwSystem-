@@ -149,6 +149,51 @@ public class SystemGUI {
         user.signIn(username,password);
     }
 
+    private void instaTransfer(){
+        InstapayTransferring transfer = new InstapayTransferring();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the username of the receiver:\n");
+        String username = input.nextLine();
+        System.out.println("Enter the amount to transfer:\n");
+        Double amount = input.nextDouble();
+        if(transfer.callTransferringMethod(username,amount)){
+            System.out.println(amount+".EG" + "  is Transferred to" + username + "successfully!");
+        }
+        else{
+            System.out.println("Transferring failed");
+
+        }
+    }
+    private void bankTransfer(){
+        BankTransferring transfer = new BankTransferring();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the Bank account of the receiver:\n");
+        String username = input.nextLine();
+        System.out.println("Enter the amount to transfer:\n");
+        Double amount = input.nextDouble();
+        if(transfer.callTransferringMethod(username,amount)){
+            System.out.println(amount+".EG" + "  is Transferred to" + username + "successfully!");
+        }
+        else{
+            System.out.println("Transferring failed");
+        }
+    }
+    private void walletTransfer(){
+        WalletTransferring transfer = new WalletTransferring();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the wallet number of the receiver:\n");
+        String username = input.nextLine();
+        System.out.println("Enter the amount to transfer:\n");
+        Double amount = input.nextDouble();
+        if(transfer.callTransferringMethod(username,amount)){
+            System.out.println(amount+".EG" + "  is Transferred to" + username + "successfully!");
+        }
+        else{
+            System.out.println("Transferring failed");
+
+        }
+    }
+
     private void loggedMenu() {
         while(true){
             System.out.println("Welcome to InstaPay Application!\n" +
@@ -162,11 +207,11 @@ public class SystemGUI {
             int choice = input.nextInt();
 
             if (choice == 1) {
-
+                walletTransfer();
             } else if (choice == 2) {
-
+                instaTransfer();
             } else if (choice == 3) {
-
+                bankTransfer();
             } else if (choice == 4) {
                 System.out.println("Your current balance is : " + user.getBalance() + "EG");
             } else if (choice == 5) {
