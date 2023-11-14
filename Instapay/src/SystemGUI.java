@@ -104,7 +104,15 @@ public class SystemGUI {
     private void payBillMethod(){
     }
 
-    private void login(){}
+    private void login(){
+        System.out.println("Pleas Enter Your Username");
+        Scanner input = new Scanner(System.in);
+        String username = input.nextLine();
+        System.out.println("Pleas Enter Your Password");
+        String password = input.nextLine();
+        SignIn user = new SignIn();
+        user.signIn(username,password);
+    }
 
     private void loggedMenu() {
         while(true){
