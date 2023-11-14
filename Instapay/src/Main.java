@@ -1,22 +1,26 @@
 public class Main {
     public static void main(String[] args) {
+        // sarewalid => sarawalid
+        // shawkyebrahim => shawkyebrahim
+        // sohaila => sohaila
+        // khadija => khadija
 //        Database database = DatabaseFactory.getDatabase();
 //        User user = new User(
-//                "sara",
+//                "sarawalid",
 //                "01004579971",
 //                500.50,
 //                "Cairo",
 //                "Sara Walid",
 //                null,
-//                "khadija"
+//                "sara"
 //        );
-//        database.createUser(user, "saraWalid");
+//        database.createUser(user, "sarawalid");
         // -------------------------
 //        database.updateUserBalance(user);
         // -------------------------
 //        System.out.println(database.checkUniqueUser("shawkyebrahim2514"));
         // -------------------------
-//        User user = database.validateUser("sara", "saraWalid");
+//        User user = database.validateUser("sarawalid", "sarawalid");
 //        if(user == null) {
 //            System.out.println("No account found!");
 //        } else {
@@ -28,5 +32,31 @@ public class Main {
 //            System.out.println(user.getBankAccountNumber());
 //            System.out.println(user.getWalletNumber());
 //        }
+//        User user = DatabaseFactory.getDatabase().validateUser("sarawalid", "sarawalid");
+//        System.out.println(user.getBalance());
+//        User user = new User(
+//            "sarawalid",
+//            "01004579971",
+//            54300.50,
+//            "Cairo",
+//            "Sara Walid",
+//            null,
+//            "01004579971"
+//        );
+//        DatabaseFactory.getDatabase().updateUserBalance(user);
+//        System.out.println(DatabaseFactory.getDatabase().verifyBankAccountNumber("123456789"));
+//        DatabaseFactory.getDatabase().incrementUserBalance("sarawalid", 100.5);
+//        User user = new User(
+//                "shawkyebrahim",
+//                "01004579971",
+//                0.0,
+//                "Cairo",
+//                "Shawky Ebrahim",
+//                "123456789",
+//                null
+//        );
+//        DatabaseFactory.getDatabase().createUser(user, "shawkyebrahim");
+//        User user = DatabaseFactory.getDatabase().validateUser("shawkyebrahim", "shawkyebrahim");
+//        System.out.println(user.getBalance());
     }
 }
