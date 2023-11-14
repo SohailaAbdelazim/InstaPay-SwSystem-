@@ -58,5 +58,7 @@ public class Main {
 //        DatabaseFactory.getDatabase().createUser(user, "shawkyebrahim");
 //        User user = DatabaseFactory.getDatabase().validateUser("shawkyebrahim", "shawkyebrahim");
 //        System.out.println(user.getBalance());
+//        TransferringMethod transferringMethod = new BankTransferring(new BankAlAhly());
+//        transferringMethod.transfer(user, 50.5, "sarawalid");
     }
 }
