@@ -9,7 +9,7 @@ public class BankAlAhly implements BankAPI{
             return false ;
         }
     }
-    public boolean transerMoney(String bankNumber, Double amount){
+    public boolean transferMoney(String bankNumber, Double amount){
         // fake transfer :
         DatabaseFactory.getDatabase().incrementBankAccountBalance(bankNumber,amount);
         return true;
