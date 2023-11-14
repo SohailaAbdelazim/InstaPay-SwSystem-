@@ -1,21 +1,22 @@
+import javax.xml.crypto.Data;
+
 public class VodafoneCash implements WalletProvider {
     User user;
 
     public boolean verifyWallet(String mobileNumber) {
         //fake verification.
-        if (mobileNumber != null && !mobileNumber.isEmpty()) {
-            //System.out.println("Account verified successfully !\n");
+        if(DatabaseFactory.getDatabase().verifyWalletNumber(mobileNumber)){
             return true;
-        } else {
-            //System.out.println("Unverified account!\n");
-            return false;
+        }
+        else{
+            return false ;
         }
     }
 
     public boolean transferMoney(String userNumber, Double amount) {
         // fake transfer :
+        DatabaseFactory.getDatabase().incrementWalletBalance(userNumber,amount);
         return true;
-        //System.out.println("Transferring money with Bank Al Ahly:\n" + " Wallet Number - " + userNumber + ", Amount - " + amount);
     }
 
     public void payBill(Bill bill) {
