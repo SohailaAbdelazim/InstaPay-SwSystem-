@@ -3,5 +3,5 @@ public interface BankAPI {
 
     public boolean transferMoney(String transferredAccount, Double amount);
 
-    public void payBill(Bill bill);
+    public boolean payBill();
 }
