@@ -102,6 +102,41 @@ public class SystemGUI {
     }
 
     private void payBillMethod(){
+        while(true) {
+            BillPayment billPayment;
+            System.out.println("Welcome to InstaPay Application!\n" +
+                    "Please Choose the Bill Type you want to pay" +
+                    "1- Electricity Bill \n" +
+                    "2- Water Bill\n" +
+                    "3- Gas Bill\n" );
+            Scanner input = new Scanner(System.in);
+            int choice = input.nextInt();
+            if(user.getBankAccountNumber() != null){
+                BankAPI bankAPI = new BankAlAhly();
+                if (choice == 1) {
+                    billPayment = new ElectricityBillPayment();
+                    billPayment.payBill(user);
+                    break;
+                } else if (choice == 2) {
+                    billPayment = new WaterBillPayment();
+                    billPayment.payBill(user);
+                    break;
+                } else if (choice == 3) {
+                    billPayment = new GasBillPayment();
+                    billPayment.payBill(user);
+                    break;
+                } else {
+                    System.out.println("Wrong Choice");
+                }
+            }
+            else{
+                System.out.println("You can't pay bills without a bank account");
+                break;
+
+            }
+
+
+        }
     }
 
     private void login(){}

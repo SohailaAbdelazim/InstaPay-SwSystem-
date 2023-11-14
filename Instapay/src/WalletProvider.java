@@ -3,5 +3,5 @@ public interface WalletProvider {
 
     public boolean transferMoney(String transferredAccount, Double amount);
 
-    public boolean payBill();
+    public boolean payBill(Bill bill);
 }
