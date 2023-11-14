@@ -1,9 +1,8 @@
 import java.sql.SQLOutput;
-import java.util.Scanner;
+import java.util.*;
 
 public class SystemGUI {
     User user ;
-    RegisterationSystem registerSystem ;
     public SystemGUI(){
         user = null;
     }
@@ -26,7 +25,8 @@ public class SystemGUI {
             }
         }
     }
-    private void bankRegister(){
+    private void bankRegister() {
+        RegisterationSystem registerSystem;
         Scanner input = new Scanner(System.in);
         System.out.println("Enter your Name: ");
         String name = input.nextLine();
@@ -46,14 +46,24 @@ public class SystemGUI {
         System.out.println("Enter your Bank Account Number: ");
         String bankAcc = input.nextLine();
 
+        // faking different wallets in coming phases.
+        System.out.println("Choose your Bank Name: \n" +
+                "1- AlAhly Bank\n");
+        String type = input.nextLine();
+
         String walletNumber = null;
-        Double balance = null ;
-        user = new User( username,  mobileNumber, balance, address, name,  bankAcc, walletNumber);
-        registerSystem.register(user,password);
-        System.out.println("Registration successful! Welcome, " + username + "!");
-        loggedMenu();
+        Double balance = null;
+        user = new User(username, mobileNumber, balance, address, name, bankAcc, walletNumber);
+        registerSystem = new BankAccountRegistration(new BankAlAhly());
+        if (registerSystem.register(user, password)) {
+            System.out.println("Registration successful!");
+        } else {
+            System.out.println("Registration Failed!");
+        }
     }
     private void walletRegister(){
+        RegisterationSystem registerSystem;
+
         Scanner input = new Scanner(System.in);
         System.out.println("Enter your Name: ");
         String name = input.nextLine();
@@ -70,16 +80,25 @@ public class SystemGUI {
         System.out.println("Enter your address: ");
         String address = input.nextLine();
 
-        System.out.println("Enter your Bank Account Number: ");
+        System.out.println("Enter your wallet Number: ");
         String walletNumber = input.nextLine();
+
+        // faking different wallets in coming phases.
+        System.out.println("Choose your wallet Name: \n" +
+                "1- Vodafone Cash\n");
+        String type = input.nextLine();
 
         String bankAcc = null;
         Double balance = null ;
         user = new User( username,  mobileNumber, balance, address, name,  bankAcc, walletNumber);
-        registerSystem.register(user,password);
+        registerSystem= new WalletRegistration(new VodafoneCash());
+        if(registerSystem.register(user,password)) {
+            System.out.println("Registration successful!");
+        }
+        else{
+            System.out.println("Registration Failed!");
 
-        System.out.println("Registration successful! Welcome, " + username + "!");
-        loggedMenu();
+        }
     }
 
     private void payBillMethod(){
@@ -137,6 +156,12 @@ public class SystemGUI {
 
     public void displayMenu(){
         while (true){
+            if(user == null){
+                unLoggedMenu();
+            }
+            else{
+                loggedMenu();
+            }
         }
     }
 }
