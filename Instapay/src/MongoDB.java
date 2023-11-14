@@ -1,15 +1,19 @@
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 import org.bson.conversions.Bson;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class MongoDB implements Database{
+import java.util.Arrays;
+
+public class MongoDB implements Database {
     private MongoDatabase database;
+
     MongoDB() {
         String connectionString = "mongodb+srv://shawkyebrahim2514:shawkyebrahim2514@cluster0.utaifal.mongodb.net/?retryWrites=true&w=majority";
         try {
@@ -19,13 +23,13 @@ public class MongoDB implements Database{
             System.out.println("Error occurred during creating the database");
         }
     }
+
     @Override
     public void createUser(User user, String password) {
         MongoCollection<Document> collection = database.getCollection("users");
         String hashedPassword = hashPassword(password);
         Document userDocument = new Document("username", user.getUsername())
                 .append("mobileNumber", user.getMobileNumber())
-                .append("balance", 0)
                 .append("address", user.getAddress())
                 .append("name", user.getName())
                 .append("bankAccountNumber", user.getBankAccountNumber())
@@ -33,6 +37,7 @@ public class MongoDB implements Database{
                 .append("password", hashedPassword);
         collection.insertOne(userDocument);
     }
+
     private String hashPassword(String password) {
         String salt = BCrypt.gensalt();
         return BCrypt.hashpw(password, salt);
@@ -41,14 +46,33 @@ public class MongoDB implements Database{
     @Override
     public User validateUser(String username, String password) {
         MongoCollection<Document> collection = database.getCollection("users");
-        Document result = collection.find(new Document("username", username)).first();
-        if(result == null || !checkMatchedPasswords(password, result.getString("password"))) {
+        Document result = collection.aggregate(Arrays.asList(
+                Aggregates.match(Filters.eq("username", username)),
+                Aggregates.lookup("wallets", "walletNumber", "walletNumber", "wallets"),
+                Aggregates.lookup("banks", "bankAccountNumber", "bankAccountNumber", "banks"),
+                // project the fields and calculate the balance
+                Aggregates.project(Projections.fields(
+                        Projections.include("username", "password", "mobileNumber", "address", "name", "bankAccountNumber", "walletNumber"),
+                        Projections.computed("balance", new Document(
+                                "$cond", Arrays.asList(
+                                // check if the walletAccount field is null
+                                new Document("$eq", Arrays.asList("$walletNumber", null)),
+                                // if true, get the balance from the banks document
+                                new Document("$arrayElemAt", Arrays.asList("$banks.balance", 0)),
+                                // if false, get the balance from the wallets document
+                                new Document("$arrayElemAt", Arrays.asList("$wallets.balance", 0))
+                        )
+                        ))
+                ))
+        )).first();
+        if (result == null || !checkMatchedPasswords(password, result.getString("password"))) {
             return null;
         }
+        double balance = result.getDouble("balance");
         return new User(
                 result.getString("username"),
                 result.getString("mobileNumber"),
-                result.getDouble("balance"),
+                balance,
                 result.getString("address"),
                 result.getString("name"),
                 result.getString("bankAccountNumber"),
@@ -69,9 +93,65 @@ public class MongoDB implements Database{
 
     @Override
     public void updateUserBalance(User user) {
-        MongoCollection<Document> collection = database.getCollection("users");
-        Bson filter = Filters.eq("username", user.getUsername());
-        Bson update = Updates.set("balance", user.getBalance());
+        if (user.getWalletNumber() != null) {
+            updateWalletAccountBalance(user.getWalletNumber(), user.getBalance());
+        } else {
+            updateBankAccountBalance(user.getBankAccountNumber(), user.getBalance());
+        }
+    }
+
+    private void updateWalletAccountBalance(String walletNumber, Double balance) {
+        MongoCollection<Document> collection = database.getCollection("wallets");
+        Bson filter = Filters.eq("walletNumber", walletNumber);
+        Bson update = Updates.set("balance", balance);
         collection.updateOne(filter, update);
+    }
+
+    private void updateBankAccountBalance(String bankAccountNumber, Double balance) {
+        MongoCollection<Document> collection = database.getCollection("banks");
+        Bson filter = Filters.eq("bankAccountNumber", bankAccountNumber);
+        Bson update = Updates.set("balance", balance);
+        collection.updateOne(filter, update);
+    }
+
+    @Override
+    public void incrementUserBalance(String username, Double additionalAmount) {
+        MongoCollection<Document> collection = database.getCollection("users");
+        Document userDocument = collection.find(new Document("username", username)).first();
+        if (userDocument.getString("walletNumber") != null) {
+            incrementWalletBalance(userDocument.getString("walletNumber"), additionalAmount);
+        } else {
+            incrementBankAccountBalance(userDocument.getString("bankAccountNumber"), additionalAmount);
+        }
+    }
+
+    @Override
+    public void incrementWalletBalance(String walletNumber, Double additionalAmount) {
+        MongoCollection<Document> collection = database.getCollection("wallets");
+        Bson filter = Filters.eq("walletNumber", walletNumber);
+        Bson update = Updates.inc("balance", additionalAmount);
+        collection.updateOne(filter, update);
+    }
+
+    @Override
+    public void incrementBankAccountBalance(String bankAccountNumber, Double additionalAmount) {
+        MongoCollection<Document> collection = database.getCollection("banks");
+        Bson filter = Filters.eq("bankAccountNumber", bankAccountNumber);
+        Bson update = Updates.inc("balance", additionalAmount);
+        collection.updateOne(filter, update);
+    }
+
+    @Override
+    public boolean verifyWalletNumber(String walletNumber) {
+        MongoCollection<Document> collection = database.getCollection("wallets");
+        long count = collection.countDocuments(new Document("walletNumber", walletNumber));
+        return count != 0;
+    }
+
+    @Override
+    public boolean verifyBankAccountNumber(String bankAccountNumber) {
+        MongoCollection<Document> collection = database.getCollection("banks");
+        long count = collection.countDocuments(new Document("bankAccountNumber", bankAccountNumber));
+        return count != 0;
     }
 }

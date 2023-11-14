@@ -8,7 +8,7 @@ public class BankAlAhly implements BankAPI{
             return false;
         }
     }
-    public boolean transerMoney(String bankNumber, Double amount){
+    public boolean transferMoney(String bankNumber, Double amount){
         // fake transfer :
         //System.out.println("Transferring money with Bank Al Ahly:\n" +n" Bank Number - " + bankNumber + ", Amount - " + amount);
         return true;
