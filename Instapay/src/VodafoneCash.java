@@ -19,8 +19,9 @@ public class VodafoneCash implements WalletProvider {
         return true;
     }
 
-    public void payBill(Bill bill) {
-        System.out.println("Paying bill with Vodafone Cash:\n" + " Bill ID - " + bill.getId() + ", Amount - " + bill.getAmount());
-        System.out.println("Bill paid successfully !\n");
+    public boolean payBill() {
+        return true;
     }
+
+
 }
