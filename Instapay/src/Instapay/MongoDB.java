@@ -36,7 +36,8 @@ public class MongoDB implements Database {
                 .append("name", user.getName())
                 .append("bankAccountNumber", user.getBankAccountNumber())
                 .append("walletNumber", user.getWalletNumber())
-                .append("password", hashedPassword);
+                .append("password", hashedPassword)
+                .append("balance", 0.0);
         collection.insertOne(userDocument);
     }
 

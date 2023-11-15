@@ -197,8 +197,8 @@ public class SystemGUI {
     }
 
     private void loggedMenu() {
+        System.out.println("Welcome " + user.getName());
         System.out.println("""
-                Welcome to InstaPay Application!
                 What would you like to do today?
                 1- Transfer to Wallet using the mobile number
                 2- Transfer to Another Instapay account""");
