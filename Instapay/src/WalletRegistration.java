@@ -1,4 +1,4 @@
-public class WalletRegistration extends RegisterationSystem{
+public class WalletRegistration extends RegistrationSystem {
 
     private final WalletProvider walletProvider;
 

@@ -1,21 +1,23 @@
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class SystemGUI {
-    User user;
+    private User user;
+    private final Scanner input;
 
     public SystemGUI() {
         user = null;
+        input = new Scanner(System.in);
     }
 
     private void registerMethod() {
         while (true) {
             System.out.println("Welcome to InstaPay Application!\n" +
-                    "Please Choose the Registration Method" +
+                    "Please Choose the Registration Method\n" +
                     "1- Register with Bank Account \n" +
-                    "2- Register with Wallet\n");
-            Scanner input = new Scanner(System.in);
+                    "2- Register with Wallet");
             int choice = input.nextInt();
+            neglectNewLineInScanner();
+
             if (choice == 1) {
                 bankRegister();
                 break;
@@ -29,8 +31,7 @@ public class SystemGUI {
     }
 
     private void bankRegister() {
-        RegisterationSystem registerSystem;
-        Scanner input = new Scanner(System.in);
+        RegistrationSystem registerSystem;
         System.out.println("Enter your Name: ");
         String name = input.nextLine();
 
@@ -39,9 +40,17 @@ public class SystemGUI {
 
         System.out.println("Enter your password: ");
         String password = input.nextLine();
+        while (!FormattingValidation.checkPassword(password)) {
+            System.out.println("Enter strong password (at least: 1 uppercase, 1 lowercase, 1 digit, and all at least 6 characters");
+            password= input.nextLine();
+        }
 
         System.out.println("Enter your mobile number: ");
         String mobileNumber = input.nextLine();
+        while (!FormattingValidation.checkMobileNumber(mobileNumber)) {
+            System.out.println("Enter correct mobile number (It must start with eiter 011,012,015,010 and should be 11 digits in total)");
+            mobileNumber= input.nextLine();
+        }
 
         System.out.println("Enter your address: ");
         String address = input.nextLine();
@@ -49,16 +58,32 @@ public class SystemGUI {
         System.out.println("Enter your Bank Account Number: ");
         String bankAcc = input.nextLine();
 
+        User registeredUser = new User(username, mobileNumber, null, address, name, bankAcc, null);
+
         // faking different wallets in coming phases.
         System.out.println("Choose your Bank Name: \n" +
-                "1- AlAhly Bank\n");
-        String type = input.nextLine();
+                "1- AlAhly Bank");
+        int bankType = input.nextInt();
+        neglectNewLineInScanner();
+        if (bankType == 1) {
+            registerSystem = new BankAccountRegistration(new BankAlAhly());
+        } else {
+            registerSystem = new BankAccountRegistration(new BankAlAhly());
+        }
 
-        String walletNumber = null;
-        Double balance = null;
-        user = new User(username, mobileNumber, balance, address, name, bankAcc, walletNumber);
-        registerSystem = new BankAccountRegistration(new BankAlAhly());
-        if (registerSystem.register(user, password)) {
+        int correctOTP = registerSystem.sendOTP(mobileNumber);
+
+        // OTP is 1234
+        System.out.println("OTP send to " + mobileNumber + ": ");
+        int userOTP = input.nextInt();
+        neglectNewLineInScanner();
+
+        if (userOTP != correctOTP) {
+            System.out.println("Invalid mobile number to send OTP");
+            return;
+        }
+
+        if (registerSystem.register(registeredUser, password)) {
             System.out.println("Registration successful!");
         } else {
             System.out.println("Registration Failed!");
@@ -66,9 +91,8 @@ public class SystemGUI {
     }
 
     private void walletRegister() {
-        RegisterationSystem registerSystem;
+        RegistrationSystem registerSystem;
 
-        Scanner input = new Scanner(System.in);
         System.out.println("Enter your Name: ");
         String name = input.nextLine();
 
@@ -86,79 +110,140 @@ public class SystemGUI {
 
         System.out.println("Enter your wallet Number: ");
         String walletNumber = input.nextLine();
+        String bankAcc = null;
+        Double balance = null;
+        User registeredUser = new User(username, mobileNumber, balance, address, name, bankAcc, walletNumber);
 
         // faking different wallets in coming phases.
         System.out.println("Choose your wallet Name: \n" +
-                "1- Vodafone Cash\n");
-        String type = input.nextLine();
+                "1- Vodafone Cash");
+        int walletType = input.nextInt();
+        neglectNewLineInScanner();
 
-        String bankAcc = null;
-        Double balance = null;
-        user = new User(username, mobileNumber, balance, address, name, bankAcc, walletNumber);
-        registerSystem = new WalletRegistration(new VodafoneCash());
-        if (registerSystem.register(user, password)) {
+        if (walletType == 1) {
+            registerSystem = new WalletRegistration(new VodafoneCash());
+        } else {
+            registerSystem = new WalletRegistration(new VodafoneCash());
+        }
+
+        int correctOTP = registerSystem.sendOTP(mobileNumber);
+
+        // OTP is 1234
+        System.out.println("OTP send to " + mobileNumber + ": ");
+        int userOTP = input.nextInt();
+        neglectNewLineInScanner();
+
+        if (userOTP != correctOTP) {
+            System.out.println("Invalid mobile number to send OTP");
+            return;
+        }
+
+        if (registerSystem.register(registeredUser, password)) {
             System.out.println("Registration successful!");
         } else {
             System.out.println("Registration Failed!");
-
         }
     }
 
     private void payBillMethod() {
         while (true) {
-            BillPayment billPayment;
             System.out.println("Welcome to InstaPay Application!\n" +
-                    "Please Choose the Bill Type you want to pay" +
+                    "Please Choose the Bill Type you want to pay\n" +
                     "1- Electricity Bill \n" +
                     "2- Water Bill\n" +
-                    "3- Gas Bill\n");
-            Scanner input = new Scanner(System.in);
+                    "3- Gas Bill");
             int choice = input.nextInt();
+            neglectNewLineInScanner();
+
             if (user.getBankAccountNumber() != null) {
-                BankAPI bankAPI = new BankAlAhly();
+                BankAPI bankAPI = new BankAlAhly(); // Must be modified in the future
                 if (choice == 1) {
-                    billPayment = new ElectricityBillPayment();
-                    billPayment.payBill(user);
+                    payBillThroughBank(bankAPI, new ElectricityBillPayment());
                     break;
                 } else if (choice == 2) {
-                    billPayment = new WaterBillPayment();
-                    billPayment.payBill(user);
+                    payBillThroughBank(bankAPI, new WaterBillPayment());
                     break;
                 } else if (choice == 3) {
-                    billPayment = new GasBillPayment();
-                    billPayment.payBill(user);
+                    payBillThroughBank(bankAPI, new GasBillPayment());
                     break;
                 } else {
                     System.out.println("Wrong Choice");
                 }
             } else {
-                System.out.println("You can't pay bills without a bank account");
-                break;
-
+                WalletProvider walletProvider = new VodafoneCash(); // Must be modified in the future
+                if (choice == 1) {
+                    payBillThroughWallet(walletProvider, new ElectricityBillPayment());
+                    break;
+                } else if (choice == 2) {
+                    payBillThroughWallet(walletProvider, new WaterBillPayment());
+                    break;
+                } else if (choice == 3) {
+                    payBillThroughWallet(walletProvider, new GasBillPayment());
+                    break;
+                } else {
+                    System.out.println("Wrong Choice");
+                }
             }
-
-
         }
     }
 
+    private void payBillThroughBank(BankAPI bankAPI, BillPayment billPaymentType) {
+        Bill bill = billPaymentType.payBill(user);
+        if (bill != null) {
+            bankAPI.payBill(user);
+            printBill(bill);
+        } else {
+            System.out.println("Failed to pay the bill");
+        }
+    }
+
+    private void payBillThroughWallet(WalletProvider walletProvider, BillPayment billPaymentType) {
+        Bill bill = billPaymentType.payBill(user);
+        if (bill != null) {
+            walletProvider.payBill(user);
+            printBill(bill);
+        } else {
+            System.out.println("Failed to pay the bill");
+        }
+    }
+
+    private void printBill(Bill bill) {
+        System.out.println("Successfully payment!");
+        System.out.println("Bill ID: " + bill.getId());
+        System.out.println("Bill Amount: " + bill.getAmount());
+        System.out.println("Bill Date: " + bill.getDate());
+        System.out.println("Bill Status: " + bill.getStatus());
+        System.out.println("Bill Consumption: " + bill.getConsumption());
+        printUserBalance();
+    }
+
     private void login() {
-        System.out.println("Pleas Enter Your Username");
-        Scanner input = new Scanner(System.in);
+        System.out.println("Pleas Enter Your Username: ");
         String username = input.nextLine();
-        System.out.println("Pleas Enter Your Password");
+        System.out.println("Pleas Enter Your Password: ");
         String password = input.nextLine();
-        SignIn user = new SignIn();
-        user.signIn(username, password);
+        SignIn signIn = new SignIn();
+        User user = signIn.signIn(username, password);
+
+        if (user == null) {
+            System.out.println("User doesn't exist!");
+        } else {
+            System.out.println("Successfully login!");
+            this.user = user;
+        }
     }
 
     private void transferMoney(TransferringMethod transferringMethod) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter the (username/transferred number) of the receiver:\n");
+        System.out.println("Enter the (username/transferred number) of the receiver:");
         String username = input.nextLine();
+
         System.out.println("Enter the amount to transfer:\n");
         Double amount = input.nextDouble();
+        neglectNewLineInScanner();
+
         if (transferringMethod.transfer(this.user, amount, username)) {
-            System.out.println(amount + ".EG" + "  is Transferred to" + username + "successfully!");
+            System.out.println(amount + ".EG" + "  is Transferred to " + username + " successfully!");
+            printUserBalance();
         } else {
             System.out.println("Transferring failed");
         }
@@ -175,7 +260,6 @@ public class SystemGUI {
     }
 
     private TransferringMethod getBankTransferringType() {
-        Scanner input = new Scanner(System.in);
         System.out.println("Which bank name you want to use?\n" +
                 "1- Al-Ahly Bank");
         String bankName = input.nextLine();
@@ -196,7 +280,6 @@ public class SystemGUI {
     }
 
     private TransferringMethod getWalletTransferringType() {
-        Scanner input = new Scanner(System.in);
         System.out.println("Which wallet name you want to use?\n" +
                 "1- Vodafone Cash");
         String walletType = input.nextLine();
@@ -211,57 +294,9 @@ public class SystemGUI {
         }
     }
 
-    private void loggedMenu() {
-        while (true) {
-            System.out.println("Welcome to InstaPay Application!\n" +
-                    "What would you like to do today?\n " +
-                    "1- Transfer to Wallet using the mobile number\n" +
-                    "2- Transfer to Another instapay account\n" +
-                    "3- Transfer to Bank Account using the account number\n" +
-                    "4- Inquire about your balance\n" +
-                    "5- Pay bills\n");
-            Scanner input = new Scanner(System.in);
-            int choice = input.nextInt();
-
-            if (choice == 1) {
-                walletTransfer();
-            } else if (choice == 2) {
-                instaTransfer();
-            } else if (choice == 3) {
-                bankTransfer();
-            } else if (choice == 4) {
-                printUserBalance();
-            } else if (choice == 5) {
-                System.exit(0);
-            } else {
-                System.out.println("Wrong Choice");
-            }
-        }
-    }
-
     private void printUserBalance() {
-        System.out.println("Your current balance is : " + user.getBalance() + "EG");
-    }
-
-    private void unLoggedMenu() {
-        while (true) {
-            System.out.println("Welcome to InstaPay Application!\n" +
-                    "Please Register or Login to use our Application\n " +
-                    "1- Register \n" +
-                    "2- Login\n");
-            Scanner input = new Scanner(System.in);
-            int choice = input.nextInt();
-
-            if (choice == 1) {
-                registerMethod();
-                break;
-            } else if (choice == 2) {
-                login();
-                break;
-            } else {
-                System.out.println("Wrong Choice");
-            }
-        }
+        Double userBalance = Math.round(user.getBalance() * 100) / 100.0;
+        System.out.println("Your current balance is : " + userBalance + "EG");
     }
 
     public void displayMenu() {
@@ -273,4 +308,94 @@ public class SystemGUI {
             }
         }
     }
+
+    private void loggedMenu() {
+        System.out.println("-".repeat(40));
+        while (true) {
+            System.out.println("Welcome to InstaPay Application!\n" +
+                    "What would you like to do today?\n " +
+                    "1- Transfer to Wallet using the mobile number\n" +
+                    "2- Transfer to Another Instapay account");
+            if (user.getWalletNumber() != null) {
+                showUserWalletAccountOptions();
+            } else {
+                showUserBankAccountOption();
+            }
+        }
+    }
+
+    private void showUserWalletAccountOptions() {
+        System.out.println("3- Inquire about your balance\n" +
+                "4- Pay bills\n" +
+                "5- Exit");
+        int choice = input.nextInt();
+        neglectNewLineInScanner();
+        if (choice == 1) {
+            walletTransfer();
+        } else if (choice == 2) {
+            instaTransfer();
+        } else if (choice == 3) {
+            printUserBalance();
+        } else if (choice == 4) {
+            payBillMethod();
+        } else if (choice == 5) {
+            System.exit(0);
+        } else {
+            System.out.println("Wrong Choice");
+        }
+    }
+
+    private void showUserBankAccountOption() {
+        System.out.println("3- Transfer to Bank Account using the account number\n" +
+                "4- Inquire about your balance\n" +
+                "5- Pay bills\n" +
+                "6- Exit");
+        int choice = input.nextInt();
+        neglectNewLineInScanner();
+        if (choice == 1) {
+            walletTransfer();
+        } else if (choice == 2) {
+            instaTransfer();
+        } else if (choice == 3) {
+            bankTransfer();
+        } else if (choice == 4) {
+            printUserBalance();
+        } else if (choice == 5) {
+            payBillMethod();
+        } else if (choice == 6) {
+            System.exit(0);
+        } else {
+            System.out.println("Wrong Choice");
+        }
+    }
+
+    private void unLoggedMenu() {
+        System.out.println("-".repeat(40));
+        while (true) {
+            System.out.println("Welcome to InstaPay Application!\n" +
+                    "Please Register or Login to use our Application\n " +
+                    "1- Register \n" +
+                    "2- Login\n" +
+                    "3- Exit");
+            int choice = input.nextInt();
+            neglectNewLineInScanner();
+
+            if (choice == 1) {
+                registerMethod();
+                break;
+            } else if (choice == 2) {
+                login();
+                break;
+            } else if (choice == 3) {
+                System.exit(0);
+            } else {
+                System.out.println("Wrong Choice");
+            }
+        }
+    }
+
+    private void neglectNewLineInScanner() {
+        input.nextLine();
+    }
+
 }

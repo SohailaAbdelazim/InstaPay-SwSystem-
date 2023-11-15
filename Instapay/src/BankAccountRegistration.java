@@ -1,4 +1,4 @@
-public class BankAccountRegistration extends RegisterationSystem {
+public class BankAccountRegistration extends RegistrationSystem {
     private final BankAPI bankAPI;
 
     public BankAccountRegistration(BankAPI type) {
@@ -6,7 +6,7 @@ public class BankAccountRegistration extends RegisterationSystem {
     }
 
     public boolean verifyAccount(User user) {
-        return bankAPI.verifyAccount(user.getBankAccountNumber(), user.getMobileNumber());
+        return bankAPI.verifyAccount(user.getMobileNumber(), user.getBankAccountNumber());
     }
 
 }

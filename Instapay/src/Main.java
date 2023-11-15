@@ -1,9 +1,21 @@
 public class Main {
     public static void main(String[] args) {
+        // Users
         // sarewalid => sarawalid
         // shawkyebrahim => shawkyebrahim
         // sohaila => sohaila
-        // khadija => khadija
+        // khad => khad
+        // basmala => Ba123456789
+
+        // Each user with money method
+        // shawky => bank (123456789)
+        // sohaila => bank (987654321)
+        // sara => wallet (01012345678)
+        // khadija => wallet (01004579971)
+        // basmala => bank(987654321)
+
+
+
 //        Database database = DatabaseFactory.getDatabase();
 //        User user = new User(
 //                "sarawalid",
@@ -61,5 +73,8 @@ public class Main {
 //        TransferringMethod transferringMethod = new BankTransferring(new BankAlAhly());
 //        transferringMethod.transfer(user, 50.5, "sarawalid");
 //        System.out.println(DatabaseFactory.getDatabase().verifyBankAccountNumber("123456789", "01004579971"));
+
+        SystemGUI systemGUI = new SystemGUI();
+        systemGUI.displayMenu();
     }
 }

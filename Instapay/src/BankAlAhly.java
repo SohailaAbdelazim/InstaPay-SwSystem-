@@ -16,19 +16,9 @@ public class BankAlAhly implements BankAPI {
         return true;
     }
 
-    public boolean payBill(Bill bill) {
-        // Check if the user has enough balance to pay the bill
-        if (!user.compareBalance(bill.getAmount())) {
-            System.out.println("You don't have enough balance to pay this bill");
-            return false;
-        }
-        // Deduct the bill amount from the user balance
-        user.deductAmount(bill.getAmount());
-        // Update the bill status to paid
-        bill.setStatus("Paid");
-        // Print the bill
-        bill.printBill();
-
+    public boolean payBill(User user) {
+        // Fake payment
+        DatabaseFactory.getDatabase().updateUserBalance(user);
         return true;
     }
 
