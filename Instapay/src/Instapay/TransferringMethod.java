@@ -1,3 +1,5 @@
+package Instapay;
+
 public abstract class TransferringMethod {
     public boolean transfer(User user, Double amount, String transferredAccount) {
         if (!user.compareBalance(amount)) return false;

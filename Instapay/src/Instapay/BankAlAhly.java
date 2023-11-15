@@ -1,3 +1,5 @@
+package Instapay;
+
 public class BankAlAhly implements BankAPI {
     private User user;
 

@@ -1,3 +1,5 @@
+package Instapay;
+
 public abstract class RegistrationSystem {
 
     public boolean register(User user, String password) {

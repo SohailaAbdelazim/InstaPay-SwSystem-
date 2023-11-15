@@ -1,3 +1,5 @@
+package Instapay;
+
 public interface BankAPI {
     public boolean verifyAccount(String mobileNumber, String bankAccountNumber);
 

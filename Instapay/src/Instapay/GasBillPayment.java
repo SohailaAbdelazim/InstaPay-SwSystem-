@@ -1,3 +1,5 @@
+package Instapay;
+
 public class GasBillPayment extends BillPayment {
     @Override
     protected Bill createBill() {
@@ -9,6 +11,7 @@ public class GasBillPayment extends BillPayment {
                 "50"
         );
     }
+
     @Override
     protected Double calculateBillAmount(Bill bill) {
         double electricityRate = 9.4;

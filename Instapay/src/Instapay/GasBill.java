@@ -1,3 +1,5 @@
+package Instapay;
+
 public class GasBill extends Bill {
     private String meterNumber;
 

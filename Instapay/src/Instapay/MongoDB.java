@@ -1,3 +1,5 @@
+package Instapay;
+
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 public class MongoDB implements Database {
     private MongoDatabase database;
 
-    MongoDB() {
+    protected MongoDB() {
         String connectionString = "mongodb+srv://shawkyebrahim2514:shawkyebrahim2514@cluster0.utaifal.mongodb.net/?retryWrites=true&w=majority";
         try {
             MongoClient mongoClient = MongoClients.create(connectionString);

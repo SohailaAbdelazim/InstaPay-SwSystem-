@@ -1,3 +1,5 @@
+package Instapay;
+
 public class User {
     private String username;
     private String mobileNumber;
@@ -6,10 +8,12 @@ public class User {
     private String name;
     private String bankAccountNumber;
     private String walletNumber;
-    public void deductAmount(Double amount){
+
+    public void deductAmount(Double amount) {
         balance -= amount;
     }
-    public Boolean compareBalance(Double amount){
+
+    public Boolean compareBalance(Double amount) {
         return balance >= amount;
     }
 

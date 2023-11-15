@@ -1,3 +1,5 @@
+package Instapay;
+
 public class BankAccountRegistration extends RegistrationSystem {
     private final BankAPI bankAPI;
 

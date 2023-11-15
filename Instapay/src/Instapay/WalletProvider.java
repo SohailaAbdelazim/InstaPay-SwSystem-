@@ -1,3 +1,5 @@
+package Instapay;
+
 public interface WalletProvider {
     public boolean verifyWallet(String mobileNumber);
 

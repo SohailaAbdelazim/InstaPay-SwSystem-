@@ -1,4 +1,4 @@
-import javax.xml.crypto.Data;
+package Instapay;
 
 public class VodafoneCash implements WalletProvider {
     User user;
@@ -23,6 +23,4 @@ public class VodafoneCash implements WalletProvider {
         DatabaseFactory.getDatabase().updateUserBalance(user);
         return true;
     }
-
-
 }

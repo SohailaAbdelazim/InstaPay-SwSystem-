@@ -1,7 +1,9 @@
-public class ElectricityBill extends Bill {
+package Instapay;
+
+public class WaterBill extends Bill {
     private String accountNumber;
 
-    public ElectricityBill(int id, String date, String status, Double consumption, String accountNumber) {
+    public WaterBill(int id, String date, String status, Double consumption, String accountNumber) {
         super(id, date, status, consumption);
         this.accountNumber = accountNumber;
     }

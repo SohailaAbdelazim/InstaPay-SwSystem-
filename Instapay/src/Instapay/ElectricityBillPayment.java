@@ -1,3 +1,5 @@
+package Instapay;
+
 public class ElectricityBillPayment extends BillPayment {
     @Override
     protected Bill createBill() {

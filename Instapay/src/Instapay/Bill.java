@@ -1,3 +1,5 @@
+package Instapay;
+
 public abstract class Bill {
     private int id;
     private Double amount;
@@ -12,7 +14,8 @@ public abstract class Bill {
         this.consumption = consumption;
     }
 
-    public Bill() {}
+    public Bill() {
+    }
 
     public int getId() {
         return id;
