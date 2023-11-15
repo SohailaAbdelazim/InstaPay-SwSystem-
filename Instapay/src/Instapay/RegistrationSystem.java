@@ -3,12 +3,17 @@ package Instapay;
 public abstract class RegistrationSystem {
 
     public boolean register(User user, String password) {
-        if (verifyAccount(user)) {
-            uploadUserToDB(user, password);
-        } else {
-            return false;
+        if(DatabaseFactory.getDatabase().checkUniqueUser(user.getUsername())){
+            if (verifyAccount(user)) {
+                uploadUserToDB(user, password);
+            } else {
+                return false;
+            }
+            return true;
         }
-        return true;
+        else{
+            return false ;
+        }
     }
 
     private void uploadUserToDB(User user, String password) {
