@@ -11,9 +11,9 @@ public interface Database {
 
     public void incrementUserBalance(String username, Double additionalAmount);
 
-    public void incrementWalletBalance(String walletNumber, Double additionalAmount);
+    public boolean incrementWalletBalance(String walletNumber, Double additionalAmount);
 
-    public void incrementBankAccountBalance(String bankNumber, Double additionalAmount);
+    public boolean incrementBankAccountBalance(String bankNumber, Double additionalAmount);
 
     public boolean verifyWalletNumber(String walletNumber);
 

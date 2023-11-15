@@ -14,8 +14,7 @@ public class BankAlAhly implements BankAPI {
 
     public boolean transferMoney(String bankNumber, Double amount) {
         // fake transfer :
-        DatabaseFactory.getDatabase().incrementBankAccountBalance(bankNumber, amount);
-        return true;
+        return DatabaseFactory.getDatabase().incrementBankAccountBalance(bankNumber, amount);
     }
 
     public boolean payBill(User user) {

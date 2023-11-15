@@ -128,19 +128,21 @@ public class MongoDB implements Database {
     }
 
     @Override
-    public void incrementWalletBalance(String walletNumber, Double additionalAmount) {
+    public boolean incrementWalletBalance(String walletNumber, Double additionalAmount) {
         MongoCollection<Document> collection = database.getCollection("wallets");
         Bson filter = Filters.eq("walletNumber", walletNumber);
         Bson update = Updates.inc("balance", additionalAmount);
-        collection.updateOne(filter, update);
+        Document userDocument = collection.findOneAndUpdate(filter, update);
+        return userDocument != null;
     }
 
     @Override
-    public void incrementBankAccountBalance(String bankAccountNumber, Double additionalAmount) {
+    public boolean incrementBankAccountBalance(String bankAccountNumber, Double additionalAmount) {
         MongoCollection<Document> collection = database.getCollection("banks");
         Bson filter = Filters.eq("bankAccountNumber", bankAccountNumber);
         Bson update = Updates.inc("balance", additionalAmount);
-        collection.updateOne(filter, update);
+        Document userDocument = collection.findOneAndUpdate(filter, update);
+        return userDocument != null;
     }
 
     @Override

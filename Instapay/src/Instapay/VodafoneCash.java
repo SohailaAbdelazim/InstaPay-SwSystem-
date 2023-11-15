@@ -14,8 +14,7 @@ public class VodafoneCash implements WalletProvider {
 
     public boolean transferMoney(String userNumber, Double amount) {
         // fake transfer :
-        DatabaseFactory.getDatabase().incrementWalletBalance(userNumber, amount);
-        return true;
+        return DatabaseFactory.getDatabase().incrementWalletBalance(userNumber, amount);
     }
 
     public boolean payBill(User user) {
