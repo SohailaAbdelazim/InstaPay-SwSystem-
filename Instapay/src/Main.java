@@ -60,5 +60,6 @@ public class Main {
 //        System.out.println(user.getBalance());
 //        TransferringMethod transferringMethod = new BankTransferring(new BankAlAhly());
 //        transferringMethod.transfer(user, 50.5, "sarawalid");
+//        System.out.println(DatabaseFactory.getDatabase().verifyBankAccountNumber("123456789", "01004579971"));
     }
 }

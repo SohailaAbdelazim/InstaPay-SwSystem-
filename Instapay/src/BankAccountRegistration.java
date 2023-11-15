@@ -1,11 +1,11 @@
-public class BankAccountRegistration extends RegisterationSystem{
-    private BankAPI bankAPI;
+public class BankAccountRegistration extends RegisterationSystem {
+    private final BankAPI bankAPI;
 
-    public BankAccountRegistration( BankAPI type){
+    public BankAccountRegistration(BankAPI type) {
         bankAPI = type;
     }
 
-    public  boolean verifyAccount(User user){
+    public boolean verifyAccount(User user) {
         return bankAPI.verifyAccount(user.getBankAccountNumber(), user.getMobileNumber());
     }
 

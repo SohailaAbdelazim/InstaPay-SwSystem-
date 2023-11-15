@@ -1,22 +1,24 @@
-public class BankAlAhly implements BankAPI{
+public class BankAlAhly implements BankAPI {
     private User user;
-    public boolean verifyAccount( String mobileNumber , String bankAccountNumber ){
+
+    public boolean verifyAccount(String mobileNumber, String bankAccountNumber) {
         //fake verification.
-        if(DatabaseFactory.getDatabase().verifyBankAccountNumber(bankAccountNumber)){ // should take mobile also!!
+        if (DatabaseFactory.getDatabase().verifyBankAccountNumber(bankAccountNumber, mobileNumber)) {
             return true;
-        }
-        else{
-            return false ;
+        } else {
+            return false;
         }
     }
-    public boolean transferMoney(String bankNumber, Double amount){
+
+    public boolean transferMoney(String bankNumber, Double amount) {
         // fake transfer :
-        DatabaseFactory.getDatabase().incrementBankAccountBalance(bankNumber,amount);
+        DatabaseFactory.getDatabase().incrementBankAccountBalance(bankNumber, amount);
         return true;
     }
-    public boolean payBill(Bill bill){
+
+    public boolean payBill(Bill bill) {
         // Check if the user has enough balance to pay the bill
-        if(!user.compareBalance(bill.getAmount())){
+        if (!user.compareBalance(bill.getAmount())) {
             System.out.println("You don't have enough balance to pay this bill");
             return false;
         }

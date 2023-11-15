@@ -149,9 +149,9 @@ public class MongoDB implements Database {
     }
 
     @Override
-    public boolean verifyBankAccountNumber(String bankAccountNumber) {
+    public boolean verifyBankAccountNumber(String bankAccountNumber, String mobileNumber) {
         MongoCollection<Document> collection = database.getCollection("banks");
-        long count = collection.countDocuments(new Document("bankAccountNumber", bankAccountNumber));
+        long count = collection.countDocuments(new Document("bankAccountNumber", bankAccountNumber).append("mobileNumber", mobileNumber));
         return count != 0;
     }
 }

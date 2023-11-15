@@ -7,5 +7,5 @@ public interface Database {
     public void incrementWalletBalance(String walletNumber, Double additionalAmount);
     public void incrementBankAccountBalance(String bankNumber, Double additionalAmount);
     public boolean verifyWalletNumber(String walletNumber);
-    public boolean verifyBankAccountNumber(String bankAccountNumber);
+    public boolean verifyBankAccountNumber(String bankAccountNumber, String mobileNumber);
 }

@@ -1,6 +1,6 @@
 public class WalletRegistration extends RegisterationSystem{
 
-    private WalletProvider walletProvider;
+    private final WalletProvider walletProvider;
 
     public WalletRegistration(WalletProvider type){
         walletProvider = type ;
